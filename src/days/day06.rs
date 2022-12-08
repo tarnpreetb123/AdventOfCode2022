@@ -1,10 +1,35 @@
-#![allow(unused)]
+use std::collections::HashSet;
+use std::fs::read_to_string;
+
 use crate::{Solution, SolutionPair};
 
 pub fn solve() -> SolutionPair {
-    // Your solution here...
-    let sol1: u64 = 0;
-    let sol2: u64 = 0;
+    (Solution::Usize(part_one()), Solution::Usize(part_two()))
+}
 
-    (Solution::U64(sol1), Solution::U64(sol2))
+fn helper(window_size: usize) -> usize{
+        let input: Vec<_> = read_to_string("input/day06.txt").unwrap()
+        .lines()
+        .map(|line| line.chars())
+        .flatten()
+        .collect();
+
+    let decode = input
+        .windows(window_size)
+        .map(|line| HashSet::<String>::from_iter(line.iter()
+                .map(|char| char.to_string())
+                .clone())
+            .len())
+        .position(|x| x == window_size)
+        .unwrap();
+
+    let index = decode + window_size;
+    return index
+}
+fn part_one() -> usize{
+    return helper(4);
+}
+
+fn part_two() -> usize{
+    return helper(14);
 }
